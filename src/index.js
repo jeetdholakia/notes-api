@@ -1,5 +1,6 @@
 const express = require("express")
 const fs = require("fs")
+require('.db/mongoose.js')
 
 const app = express()
 
