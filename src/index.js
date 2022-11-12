@@ -15,15 +15,16 @@ app.get('/notes', (req, res) => {
     })
 })
 
-app.post('/notes', (req, res) => {
+app.post('/notes', async (req, res) => {
     const note = new Note(req.body)
-    note.save()
-    .then(() => {
+
+    try {
+        await note.save()
         res.status(201).send(note)
-    })
-    .catch((err) => {
+    }
+    catch(err) {
         res.status(500).send(err)
-    })
+    }
 })
 
 app.listen(3000, () => {
