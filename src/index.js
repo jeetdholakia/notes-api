@@ -48,6 +48,18 @@ app.patch('/notes/:id', async (req, res) => {
     }
 })
 
+app.delete('/notes/:id', async (req, res) => {
+    try {
+        const note = await Note.findByIdAndDelete(req.params.id)
+        if(!note) {
+            res.status(404).send(err)
+        }
+        req.status(200).send("Note has been deleted")
+    } catch (err) {
+        res.status(500).send(err)
+    }
+})
+
 app.listen(3000, () => {
     console.log("API Started on port 3000")
 })
