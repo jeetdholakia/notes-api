@@ -6,6 +6,7 @@ const Note = require('./models/note')
 const app = express()
 app.use(express.json())
 
+
 app.get('/notes', async (req, res) => {
     try {
         const notes = await Note.find({})
@@ -13,13 +14,6 @@ app.get('/notes', async (req, res) => {
     } catch(err) {
         res.status(500).send(err)
     }
-    
-    fs.readFile(__dirname + '/' + "notes.json", 'utf-8', (err, data) => {
-        if(err) {
-            return console.log(err)
-        }
-        res.send(data)
-    })
 })
 
 app.post('/notes', async (req, res) => {
@@ -29,6 +23,33 @@ app.post('/notes', async (req, res) => {
         await note.save()
         res.status(201).send(note)
     } catch(err) {
+        res.status(500).send(err)
+    }
+})
+
+app.patch('/notes/:id', async (req, res) => {
+    try {
+        const note = await Note.findById(req.params.id)
+        console.log(note)
+        if(!note) {
+            res.status(404).send(err)
+        }
+        note.note = req.body.note
+        await note.save()
+        res.status(200).send(note)
+    } catch (err) {
+        res.status(500).send(err)
+    }
+})
+
+app.delete('/notes/:id', async (req, res) => {
+    try {
+        const note = await Note.findByIdAndDelete(req.params.id)
+        if(!note) {
+            res.status(404).send(err)
+        }
+        req.status(200).send("Note has been deleted")
+    } catch (err) {
         res.status(500).send(err)
     }
 })
