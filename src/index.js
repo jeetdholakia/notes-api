@@ -1,11 +1,8 @@
 const express = require("express")
 const fs = require("fs")
-require('./db/mongoose')
-const Note = require('./models/note')
+require('.db/mongoose.js')
 
 const app = express()
-app.use(express.json())
-
 
 app.get('/notes', async (req, res) => {
     try {
@@ -48,7 +45,7 @@ app.delete('/notes/:id', async (req, res) => {
         if(!note) {
             res.status(404).send(err)
         }
-        req.status(200).send("Note has been deleted")
+        res.status(200).send("Note has been deleted")
     } catch (err) {
         res.status(500).send(err)
     }
